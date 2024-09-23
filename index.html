@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Tournament Registration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1625401586060-f12be3d7cc57?w=500&auto=format&fit=crop&q=60') no-repeat center center/cover;  
+            color: white;
+        
+        }
+
+        .landing {
+            background: url('https://images.unsplash.com/photo-1625401586060-f12be3d7cc57?w=500&auto=format&fit=crop&q=60') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            text-align: center;
+            margin-top: 5px;
+            
+        }
+        .overlay:hover{
+            box-shadow: 5px 5px 10px black;
+            transform: scale(1.1);
+            transition: 1s;
+            background-color: transparent;
+            color:black;
+        }
+
+        .btn {
+            background-color: #4CAF50;  
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;  
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 30px auto;
+            margin-top: 200px;
+            
+            padding: 20px;
+            background: rgba(128, 128, 128, 0.9);  
+            background-color: transparent; 
+
+            border-radius: 8px;
+            /* box-shadow: 1px 1px 10px white; */
+            display: none;  
+        }
+        .form-container:hover{
+            box-shadow: 1px 1px 10px black;
+            transform: scale(1.02);
+            transition: 1s;
+        }
+
+        .form-step {
+            display: none;  
+        }
+
+        .form-step.active {
+            display: block;  
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;  
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;  
+        }
+
+        .hidden {
+            display: none;
+        }
+        #scroll{
+             
+            color: red;
+            font-size: large;
+            padding: 30px;
+            font-style: italic;
+            font-size: 30px;
+            letter-spacing: 1px;
+            font-weight:bolder;
+            font-family: Arial, Helvetica, sans-serif;
+
+        
+        }
+    </style>
+</head>
+<body>
+    <marquee><p id="scroll">Registration will be close on 25 September 2024</p></marquee>
+    
+    <section class="landing">
+        
+        <div class="overlay">
+            <h1>Welcome to XYZ Cricket Tournament</h1>
+            <p>Join the excitement and register for thrilling cricket tournaments!</p>
+            <button class="btn" onclick="showForm()">Register Now</button>
+        </div>
+    </section>
+
+     
+    <section id="registration-form" class="form-container">
+        <h2>Registration Form</h2>
+        <form id="multi-step-form" onsubmit="submitForm(event)">
+            <div class="form-step active">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required placeholder="Enter your Name" >
+                <label for="email">Email:</label>
+                <input type="email" id="email"   placeholder="Enter your email"required >
+                <button type="button" class="btn" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <div class="form-step">
+                <label for="format">Preferred Format:</label>
+                <select id="format" required>
+                    <option value="T20">T20</option>
+                    <option value="ODI">ODI</option>
+                    <option value="Test">Test</option>
+                </select>
+                <label for="team">Your Team Name:</label>
+                <input type="text" id="team" required placeholder="Enter here">
+                <button type="button" class="btn" onclick="prevStep(1)">Previous</button>
+                <button type="button" class="btn" onclick="nextStep(3)">Next</button>
+            </div>
+
+            <div class="form-step">
+                <h2>Confirmation</h2>
+                <div id="summary"></div>
+                <button type="button" class="btn" onclick="prevStep(2)">Previous</button>
+                <button type="submit" class="btn">Submit</button>
+            </div>
+        </form>
+    </section>
+
+    <script>
+        function showForm() {
+            document.querySelector('.landing').style.display = 'none'; 
+            document.getElementById('registration-form').style.display = 'block'; 
+        }
+
+        function nextStep(step) {
+            const currentStep = document.querySelector('.form-step.active');
+            currentStep.classList.remove('active');
+            const nextStep = document.querySelector(`.form-step:nth-child(${step})`);
+            nextStep.classList.add('active');
+            if (step === 3) {
+                updateSummary();  
+            }
+        }
+
+        function prevStep(step) {
+            const currentStep = document.querySelector('.form-step.active');
+            currentStep.classList.remove('active');
+            const prevStep = document.querySelector(`.form-step:nth-child(${step})`);
+            prevStep.classList.add('active');
+        }
+
+        function updateSummary() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const format = document.getElementById('format').value;
+            const team = document.getElementById('team').value;
+            document.getElementById('summary').innerHTML = `
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Preferred Format:</strong> ${format}</p>
+                <p><strong>Your Team Name:</strong> ${team}</p>
+            `;
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            alert("Form Submitted Successfully!");
+        }
+    </script>
+</body>
+</html>
+
